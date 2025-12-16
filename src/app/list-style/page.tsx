@@ -171,69 +171,68 @@ export default function ListStylePage() {
 
   return (
     <>
-      <div className="fixed top-4 left-1/2 -translate-x-1/2 z-50 w-full max-w-2xl bg-background/80 backdrop-blur-sm border-[0.5px] drop-shadow-xs rounded-xl px-4 py-3">
-        <div className="flex flex-wrap gap-x-6 gap-y-3">
-          <div className="flex flex-wrap gap-x-6 gap-y-3 mr-auto">
-            <div className="flex items-center gap-3">
-              <Label className="text-sm whitespace-nowrap">
-                Size: <span className="tabular-nums">{fontSize}</span>px
-              </Label>
-              <ButtonGroup>
-                <Button
-                  size="icon"
+      <div className="flex flex-col mx-auto gap-4 sm:gap-8 max-w-[640px]">
+        <div className="sticky top-0 sm:top-4 z-50 bg-background/80 backdrop-blur-sm border-b-[0.5px] sm:border-[0.5px] drop-shadow-xs sm:rounded-xl px-4 py-3">
+          <div className="flex flex-wrap gap-x-6 gap-y-3">
+            <div className="flex flex-wrap gap-x-6 gap-y-3 mr-auto">
+              <div className="flex items-center gap-3">
+                <Label className="text-sm whitespace-nowrap">
+                  Size: <span className="tabular-nums">{fontSize}</span>px
+                </Label>
+                <ButtonGroup>
+                  <Button
+                    size="icon"
+                    variant="outline"
+                    onClick={() => setFontSize(Math.max(14, fontSize - 1))}
+                    disabled={fontSize <= 14}
+                  >
+                    <Minus />
+                  </Button>
+                  <Button
+                    size="icon"
+                    variant="outline"
+                    onClick={() => setFontSize(Math.min(24, fontSize + 1))}
+                    disabled={fontSize >= 24}
+                  >
+                    <Plus />
+                  </Button>
+                </ButtonGroup>
+              </div>
+              <div className="flex irems-center gap-3">
+                <Label className="text-sm">Text amount</Label>
+                <ToggleGroup
+                  type="single"
+                  value={textAmount}
+                  onValueChange={(val) => {
+                    if (val) setTextAmount(val as "fewer" | "more");
+                  }}
                   variant="outline"
-                  onClick={() => setFontSize(Math.max(14, fontSize - 1))}
-                  disabled={fontSize <= 14}
                 >
-                  <Minus />
-                </Button>
-                <Button
-                  size="icon"
-                  variant="outline"
-                  onClick={() => setFontSize(Math.min(24, fontSize + 1))}
-                  disabled={fontSize >= 24}
-                >
-                  <Plus />
-                </Button>
-              </ButtonGroup>
+                  <ToggleGroupItem value="more" aria-label="More text">
+                    More
+                  </ToggleGroupItem>
+                  <ToggleGroupItem value="fewer" aria-label="Fewer text">
+                    Fewer
+                  </ToggleGroupItem>
+                </ToggleGroup>
+              </div>
             </div>
-            <div className="flex irems-center gap-3">
-              <Label className="text-sm">Text amount</Label>
-              <ToggleGroup
-                type="single"
-                value={textAmount}
-                onValueChange={(val) => {
-                  if (val) setTextAmount(val as "fewer" | "more");
-                }}
-                variant="outline"
-              >
-                <ToggleGroupItem value="more" aria-label="More text">
-                  More
-                </ToggleGroupItem>
-                <ToggleGroupItem value="fewer" aria-label="Fewer text">
-                  Fewer
-                </ToggleGroupItem>
-              </ToggleGroup>
-            </div>
-          </div>
 
-          <Button asChild>
-            <a
-              href="https://github.com/levinsondk/share-sandbox/blob/main/src/app/list-style/"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <img src="/github-mark-white.svg" alt="" className="size-4" />
-              GitHub
-            </a>
-          </Button>
+            <Button asChild>
+              <a
+                href="https://github.com/levinsondk/share-sandbox/blob/main/src/app/list-style/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <img src="/github-mark-white.svg" alt="" className="size-4" />
+                GitHub
+              </a>
+            </Button>
+          </div>
         </div>
-      </div>
-      <div
-        className="max-w-2xl mx-auto my-25 px-4"
-        style={{ fontSize: `${fontSize}px` }}
-      >
-        {textAmount === "fewer" ? <FewerText /> : <MoreText />}
+        <div className="px-4 mb-16" style={{ fontSize: `${fontSize}px` }}>
+          {textAmount === "fewer" ? <FewerText /> : <MoreText />}
+        </div>
       </div>
     </>
   );
