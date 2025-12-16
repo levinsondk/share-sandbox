@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { useState, useEffect } from "react";
 
 const BG_COLORS = [
   { color: "#E1FF00", dark: false },
@@ -112,10 +112,17 @@ function RandomizedSvg({
 }
 
 export default function RandomizedSvgPage() {
-  // Generate 8 unique SVGs, memoized to prevent re-generation on every render
-  const svgDataList = useMemo(() => {
-    return Array.from({ length: 8 }, () => generateRandomSvg());
+  const [svgDataList, setSvgDataList] = useState<
+    ReturnType<typeof generateRandomSvg>[] | null
+  >(null);
+  useEffect(() => {
+    // This only runs on the client after hydration
+    setSvgDataList(Array.from({ length: 8 }, () => generateRandomSvg()));
   }, []);
+  if (!svgDataList) {
+    // Show nothing or a loading state during SSR and initial hydration
+    return null; // or <div>Loading...</div>
+  }
 
   return (
     <div style={{ display: "flex", gap: 16, flexWrap: "wrap", padding: 32 }}>

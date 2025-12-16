@@ -6,6 +6,7 @@ export const size = {
   height: 32,
 };
 export const contentType = "image/png";
+export const dynamic = "force-dynamic";
 
 const BG_COLORS = [
   { color: "#E1FF00", dark: false },
