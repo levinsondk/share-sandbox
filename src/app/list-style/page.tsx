@@ -1,6 +1,10 @@
 "use client";
 
 import { useId, useState } from "react";
+import { Slider } from "@/components/ui/slider";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
+import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
 import "./page.css";
 
 function MoreText() {
@@ -160,70 +164,61 @@ function FewerText() {
 
 export default function ListStylePage() {
   const sliderId = useId();
-  const textAmountId = useId();
   const [fontSize, setFontSize] = useState(16);
   const [textAmount, setTextAmount] = useState<"fewer" | "more">("more");
 
   return (
     <>
-      <div className="fixed top-0 left-0 right-0 z-50 bg-background border-b border-gray-200 dark:border-gray-800 shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 py-4">
+      <div className="fixed top-0 left-0 right-0 z-50 bg-background border-b border-border shadow-sm">
+        <div className="max-w-2xl mx-auto px-4 py-3">
           <div className="flex flex-wrap items-center gap-6">
             <div className="flex items-center gap-3">
-              <label htmlFor={sliderId}>
-                Font Size: <span>{fontSize}</span>px
-              </label>
-              <input
+              <Label htmlFor={sliderId} className="text-sm whitespace-nowrap">
+                Font Size: <span className="tabular-nums">{fontSize}</span>px
+              </Label>
+              <Slider
                 id={sliderId}
-                type="range"
                 min={14}
                 max={24}
-                value={fontSize}
-                onChange={(e) => setFontSize(e.currentTarget.valueAsNumber)}
+                value={[fontSize]}
+                onValueChange={([val]) => setFontSize(val)}
                 className="w-32"
               />
             </div>
 
-            <div className="flex items-center gap-4">
-              <div id={textAmountId}>Text amount</div>
-              <div
-                role="radiogroup"
-                aria-labelledby={textAmountId}
-                className="flex items-center gap-4"
+            <div className="flex irems-center gap-3">
+              <Label className="text-sm">Text amount</Label>
+              <ToggleGroup
+                type="single"
+                value={textAmount}
+                onValueChange={(val) => {
+                  if (val) setTextAmount(val as "fewer" | "more");
+                }}
+                variant="outline"
               >
-                <label className="flex items-center gap-2 cursor-pointer">
-                  <input
-                    type="radio"
-                    name="textAmount"
-                    value="more"
-                    checked={textAmount === "more"}
-                    onChange={(e) =>
-                      setTextAmount(e.target.value as "fewer" | "more")
-                    }
-                    className="cursor-pointer"
-                  />
-                  <span>More</span>
-                </label>
-                <label className="flex items-center gap-2 cursor-pointer">
-                  <input
-                    type="radio"
-                    name="textAmount"
-                    value="fewer"
-                    checked={textAmount === "fewer"}
-                    onChange={(e) =>
-                      setTextAmount(e.target.value as "fewer" | "more")
-                    }
-                    className="cursor-pointer"
-                  />
-                  <span>Fewer</span>
-                </label>
-              </div>
+                <ToggleGroupItem value="more" aria-label="More text">
+                  More
+                </ToggleGroupItem>
+                <ToggleGroupItem value="fewer" aria-label="Fewer text">
+                  Fewer
+                </ToggleGroupItem>
+              </ToggleGroup>
             </div>
+            <Button asChild>
+              <a
+                href="https://github.com/levinsondk/share-sandbox/blob/main/src/app/list-style/page.css"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <img src="/github-mark-white.svg" alt="" className="size-4" />
+                GitHub
+              </a>
+            </Button>
           </div>
         </div>
       </div>
       <div
-        className="max-w-[60ch] mx-auto mt-24 px-4"
+        className="max-w-2xl mx-auto mt-20 px-4"
         style={{ fontSize: `${fontSize}px` }}
       >
         {textAmount === "fewer" ? <FewerText /> : <MoreText />}
