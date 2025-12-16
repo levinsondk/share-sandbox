@@ -1,18 +1,16 @@
 "use client";
 
-import { useId, useState } from "react";
-import { Slider } from "@/components/ui/slider";
+import { useState } from "react";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { ButtonGroup } from "@/components/ui/button-group";
-import { Input } from "@/components/ui/input";
 import { Plus, Minus } from "lucide-react";
 import "./page.css";
 
 function MoreText() {
   return (
-    <>
+    <div>
       <p>
         The perfect taco is not just food—it's a carefully orchestrated symphony
         of textures, flavors, and the quiet satisfaction of holding something
@@ -117,7 +115,7 @@ function MoreText() {
         now, with your hands, over a plate because things will drip, and that's
         exactly how it should be. Perfection is messy. Embrace the chaos.
       </p>
-    </>
+    </div>
   );
 }
 
