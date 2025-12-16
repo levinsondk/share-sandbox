@@ -12,27 +12,12 @@ const BG_COLORS = [
 ];
 const BOX_SIZE = 100;
 const CENTER = BOX_SIZE / 2;
-const MIN_RADIUS = 0; // Don't get too close to center
-const MAX_RADIUS = 70; // Stay within bounds (50 would touch edges)
-
-// this is a total random function
-// function generateRandomSvg() {
-//   const randomCoords = () => Math.floor(Math.random() * BOX_SIZE);
-//   const vertexCount = Math.floor(Math.random() * 6) + 3;
-//   const bg = BG_COLORS[Math.floor(Math.random() * BG_COLORS.length)];
-
-//   let pathString = `M ${randomCoords()} ${randomCoords()} `;
-//   for (let i = 0; i < vertexCount; i++) {
-//     pathString += `L ${randomCoords()} ${randomCoords()} `;
-//   }
-//   pathString += "Z";
-
-//   return {
-//     bg,
-//     pathString,
-//     fill: bg.dark ? "#FFFFFF" : "#262626",
-//   };
-// }
+const MIN_RADIUS = 5;
+const MAX_RADIUS = 45;
+const MIN_RADIUS_EVEN = 40;
+const MAX_RADIUS_EVEN = 75;
+const MIN_RADIUS_ODD = 40;
+const MAX_RADIUS_ODD = 15;
 
 function generateConstrainedVertex(
   vertexIndex: number,
@@ -61,7 +46,7 @@ function generateConstrainedVertex(
 }
 
 function generateRandomSvg() {
-  const vertexCount = Math.floor(Math.random() * 32) + 4;
+  const vertexCount = Math.floor(Math.random() * 12) + 6;
   const bg = BG_COLORS[Math.floor(Math.random() * BG_COLORS.length)];
 
   // Generate first vertex
@@ -69,19 +54,20 @@ function generateRandomSvg() {
     0,
     vertexCount,
     CENTER,
-    MIN_RADIUS,
-    MAX_RADIUS
+    MIN_RADIUS_EVEN,
+    MAX_RADIUS_EVEN
   );
   let pathString = `M ${firstVertex.x} ${firstVertex.y} `;
 
   // Generate remaining vertices, each in its own pie slice
   for (let i = 1; i < vertexCount; i++) {
+    const isEven = i % 2 === 0;
     const vertex = generateConstrainedVertex(
       i,
       vertexCount,
       CENTER,
-      MIN_RADIUS,
-      MAX_RADIUS
+      isEven ? MIN_RADIUS_EVEN : MIN_RADIUS_ODD,
+      isEven ? MAX_RADIUS_EVEN : MAX_RADIUS_ODD
     );
     pathString += `L ${vertex.x} ${vertex.y} `;
   }
@@ -109,7 +95,8 @@ function RandomizedSvg({
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        borderRadius: 8,
+        borderRadius: "50%",
+        overflow: "hidden",
       }}
     >
       <svg
