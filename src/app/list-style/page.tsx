@@ -5,6 +5,9 @@ import { Slider } from "@/components/ui/slider";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
+import { ButtonGroup } from "@/components/ui/button-group";
+import { Input } from "@/components/ui/input";
+import { Plus, Minus } from "lucide-react";
 import "./page.css";
 
 function MoreText() {
@@ -163,59 +166,67 @@ function FewerText() {
 }
 
 export default function ListStylePage() {
-  const sliderId = useId();
   const [fontSize, setFontSize] = useState(16);
   const [textAmount, setTextAmount] = useState<"fewer" | "more">("more");
 
   return (
     <>
       <div className="fixed top-4 left-1/2 -translate-x-1/2 z-50 w-full max-w-2xl bg-background/80 backdrop-blur-sm border-[0.5px] drop-shadow-xs rounded-xl px-4 py-3">
-        <div className="flex flex-wrap items-center gap-6">
-          <div className="flex items-center gap-3">
-            <Label htmlFor={sliderId} className="text-sm whitespace-nowrap">
-              Font Size: <span className="tabular-nums">{fontSize}</span>px
-            </Label>
-            <Slider
-              id={sliderId}
-              min={14}
-              max={24}
-              value={[fontSize]}
-              onValueChange={([val]) => setFontSize(val)}
-              className="w-32"
-            />
-          </div>
-
-          <div className="flex irems-center gap-3">
-            <Label className="text-sm">Text amount</Label>
-            <ToggleGroup
-              type="single"
-              value={textAmount}
-              onValueChange={(val) => {
-                if (val) setTextAmount(val as "fewer" | "more");
-              }}
-              variant="outline"
-            >
-              <ToggleGroupItem value="more" aria-label="More text">
-                More
-              </ToggleGroupItem>
-              <ToggleGroupItem value="fewer" aria-label="Fewer text">
-                Fewer
-              </ToggleGroupItem>
-            </ToggleGroup>
-          </div>
-
-          <div className="ml-auto">
-            <Button asChild>
-              <a
-                href="https://github.com/levinsondk/share-sandbox/blob/main/src/app/list-style/"
-                target="_blank"
-                rel="noopener noreferrer"
+        <div className="flex flex-wrap gap-x-6 gap-y-3">
+          <div className="flex flex-wrap gap-x-6 gap-y-3 mr-auto">
+            <div className="flex items-center gap-3">
+              <Label className="text-sm whitespace-nowrap">
+                Size: <span className="tabular-nums">{fontSize}</span>px
+              </Label>
+              <ButtonGroup>
+                <Button
+                  size="icon"
+                  variant="outline"
+                  onClick={() => setFontSize(Math.max(14, fontSize - 1))}
+                  disabled={fontSize <= 14}
+                >
+                  <Minus />
+                </Button>
+                <Button
+                  size="icon"
+                  variant="outline"
+                  onClick={() => setFontSize(Math.min(24, fontSize + 1))}
+                  disabled={fontSize >= 24}
+                >
+                  <Plus />
+                </Button>
+              </ButtonGroup>
+            </div>
+            <div className="flex irems-center gap-3">
+              <Label className="text-sm">Text amount</Label>
+              <ToggleGroup
+                type="single"
+                value={textAmount}
+                onValueChange={(val) => {
+                  if (val) setTextAmount(val as "fewer" | "more");
+                }}
+                variant="outline"
               >
-                <img src="/github-mark-white.svg" alt="" className="size-4" />
-                GitHub
-              </a>
-            </Button>
+                <ToggleGroupItem value="more" aria-label="More text">
+                  More
+                </ToggleGroupItem>
+                <ToggleGroupItem value="fewer" aria-label="Fewer text">
+                  Fewer
+                </ToggleGroupItem>
+              </ToggleGroup>
+            </div>
           </div>
+
+          <Button asChild>
+            <a
+              href="https://github.com/levinsondk/share-sandbox/blob/main/src/app/list-style/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <img src="/github-mark-white.svg" alt="" className="size-4" />
+              GitHub
+            </a>
+          </Button>
         </div>
       </div>
       <div
